@@ -58,10 +58,14 @@
 		header Connection *Upgrade*
 		header Upgrade    websocket
 
-  	path /mqtt /mqtt/*
+    path_regexp mqttPath ^/mqtt/?$
   }
 
 	reverse_proxy @mqttWs {
+    log {
+      output stdout
+      format json
+    }
 		# for private networking replicas are exposed as multiple dns results, use those dns results as the upstreams
 		dynamic a {
 			name {$MQTT_SERVICE}
